@@ -146,16 +146,16 @@ class BookApiController extends ApiController
         return [
             'create' => [
                 'name'                => ['required', 'string', 'max:255'],
-                'description'         => ['string', 'max:1900'],
-                'description_html'    => ['string', 'max:2000'],
+                'description'         => ['string', 'max:64000'],
+                'description_html'    => ['string', 'max:65000'],
                 'tags'                => ['array'],
                 'image'               => array_merge(['nullable'], $this->getImageValidationRules()),
                 'default_template_id' => ['nullable', 'integer'],
             ],
             'update' => [
                 'name'                => ['string', 'min:1', 'max:255'],
-                'description'         => ['string', 'max:1900'],
-                'description_html'    => ['string', 'max:2000'],
+                'description'         => ['string', 'max:64000'],
+                'description_html'    => ['string', 'max:65000'],
                 'tags'                => ['array'],
                 'image'               => array_merge(['nullable'], $this->getImageValidationRules()),
                 'default_template_id' => ['nullable', 'integer'],

@@ -19,8 +19,8 @@ class ChapterApiController extends ApiController
         'create' => [
             'book_id'             => ['required', 'integer'],
             'name'                => ['required', 'string', 'max:255'],
-            'description'         => ['string', 'max:1900'],
-            'description_html'    => ['string', 'max:2000'],
+            'description'         => ['string', 'max:64000'],
+            'description_html'    => ['string', 'max:65000'],
             'tags'                => ['array'],
             'priority'            => ['integer'],
             'default_template_id' => ['nullable', 'integer'],
@@ -28,8 +28,8 @@ class ChapterApiController extends ApiController
         'update' => [
             'book_id'             => ['integer'],
             'name'                => ['string', 'min:1', 'max:255'],
-            'description'         => ['string', 'max:1900'],
-            'description_html'    => ['string', 'max:2000'],
+            'description'         => ['string', 'max:64000'],
+            'description_html'    => ['string', 'max:65000'],
             'tags'                => ['array'],
             'priority'            => ['integer'],
             'default_template_id' => ['nullable', 'integer'],

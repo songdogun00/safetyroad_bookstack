@@ -102,7 +102,7 @@ class BookController extends Controller
         $this->checkPermission(Permission::BookCreateAll);
         $validated = $this->validate($request, [
             'name'                => ['required', 'string', 'max:255'],
-            'description_html'    => ['string', 'max:2000'],
+            'description_html'    => ['string', 'max:65000'],
             'image'               => array_merge(['nullable'], $this->getImageValidationRules()),
             'tags'                => ['array'],
             'default_template_id' => ['nullable', 'integer'],
@@ -186,7 +186,7 @@ class BookController extends Controller
 
         $validated = $this->validate($request, [
             'name'                => ['required', 'string', 'max:255'],
-            'description_html'    => ['string', 'max:2000'],
+            'description_html'    => ['string', 'max:65000'],
             'image'               => array_merge(['nullable'], $this->getImageValidationRules()),
             'tags'                => ['array'],
             'default_template_id' => ['nullable', 'integer'],
