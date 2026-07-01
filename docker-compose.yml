@@ -16,18 +16,15 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
     volumes:
-      # - ./src:/var/www/bookstack
       - ./src/app:/var/www/bookstack/app
-      # - ./src/public:/var/www/bookstack/public
-      # - bookstack_public:/var/www/bookstack/public
       - ./src/public/uploads:/var/www/bookstack/public/uploads
       - ./src/resources:/var/www/bookstack/resources
       - ./src/routes:/var/www/bookstack/routes
       - ./src/storage:/var/www/bookstack/storage
       - ./src/bootstrap:/var/www/bookstack/bootstrap
+      - bookstack_public:/var/www/bookstack/public
       - bookstack_vendor:/var/www/bookstack/vendor
-      # - bookstack_storage:/var/www/bookstack/storage
-      # - bookstack_bootstrap:/var/www/bookstack/bootstrap
+      - bookstack_dompdf_fonts:/var/www/bookstack/storage/fonts/dompdf
     restart: unless-stopped
     depends_on:
       bookstack_db:
@@ -42,7 +39,6 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
       - bookstack_public:/var/www/bookstack/public:ro # 추가
-      # - ./src/public:/var/www/bookstack/public:ro
     depends_on:
       - bookstack
   bookstack_db:
@@ -68,6 +64,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  bookstack_vendor:
   bookstack_public:
-  # bookstack_bootstrap:
+  bookstack_vendor:
+  bookstack_dompdf_fonts:

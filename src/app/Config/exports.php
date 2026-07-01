@@ -210,7 +210,7 @@ return [
          *
          * @var string
          */
-        'default_font' => 'dejavu sans',
+        'default_font' => 'NanumGothic',
 
         /**
          * Image DPI setting.
