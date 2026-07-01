@@ -1,8 +1,7 @@
 # SafetyRoad BookStack 설치 가이드 (사용자용)
 
 이 문서는 실제 코드(`Dockerfile`, `docker-compose.yml`, `entrypoint.sh`, `src/database/migrations`)를 기준으로 작성한
-**설치 담당자용** 가이드입니다. `README.md`(구버전, linuxserver 이미지 기준)와 달리 이 프로젝트는
-BookStack 소스(`src/`)를 직접 빌드하는 **커스텀 이미지**를 사용합니다.
+**설치 담당자용** 가이드입니다.
 
 ## BookStack (standalone, 형상 관리)
 
