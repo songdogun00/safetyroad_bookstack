@@ -1,70 +1,37 @@
-## 사용자 중심으로 설치가이드 작성할 것
+# SafetyRoad BookStack
 
--------------------------------------------------------------------------------------------------
-# BookStack (standalone, 형상 관리)
-
-BookStack + 전용 MariaDB 를 Docker Compose 로 단독 구동하기 위한 정의입니다.
-BookStack 은 MySQL/MariaDB 전용이라 MariaDB 컨테이너를 함께 띄웁니다.
-데이터 볼륨은 프로젝트 폴더 내부가 아니라 **호스트의 외부 절대 경로(`${DATA_ROOT}`)** 에 둡니다.
+SafetyRoad 문서 관리용 [BookStack](https://www.bookstackapp.com/) 배포 프로젝트입니다.
+linuxserver 이미지를 그대로 쓰는 대신, BookStack 소스(`src/`)를 직접 빌드하는 **커스텀 Docker 이미지**를 사용하며
+PDF 내보내기 시 한글이 깨지지 않도록 나눔고딕 폰트를 내장하는 등 SafetyRoad 환경에 맞게 조정되어 있습니다.
 
 ## 구성
 
 | 파일 | 역할 |
 |------|------|
-| `docker-compose.yml` | BookStack + MariaDB 서비스 정의 (호스트 8000 → 컨테이너 80) |
-| `.env.example` | 환경변수 템플릿 (복사해서 `.env` 작성, `DATA_ROOT` 포함) |
-| `.gitignore` | `.env` 제외 |
-| `Dockerfile` *(선택)* | 초기화 스크립트 주입 등 커스터마이징이 필요할 때만 |
-| `custom-init/01-custom-init.sh` *(선택)* | 기동 시 root 로 실행되는 초기화 스크립트 |
-사용자 중심으로 설치가이드 
+| `Dockerfile` | Node 20에서 프론트엔드 빌드 → PHP 8.3-fpm 위에 BookStack 소스 및 나눔고딕(+이탤릭 생성) 폰트 포함해 이미지 빌드 |
+| `docker-compose.yml` | BookStack(PHP-FPM+Nginx) + MariaDB 11.4 서비스 정의 |
+| `entrypoint.sh` | 컨테이너 기동 시 composer install, 권한 정리, 폰트 배치, DB 마이그레이션 등 자동 수행 |
+| `.env.example` | 환경변수 템플릿 (복사해서 `.env` 작성) |
+| `src/` | BookStack 애플리케이션 소스 (커스텀 마이그레이션 포함) |
+| `fonts/` | PDF export용 나눔고딕 폰트 및 이탤릭 생성 스크립트 |
 
-## 최초 실행
+## 문서 안내
+
+- **설치/운영 담당자**라면 → [`README_install.md`](./README_install.md)
+  환경설정, 빌드/기동, APP_KEY 발급, DB 커스텀 설정, 백업/업데이트 절차를 다룹니다.
+- **BookStack을 실제로 이용하는 최종 사용자**라면 → [`README_User.md`](./README_User.md)
+  접속 방법, 문서 작성, 검색, PDF 내보내기, 권한/공유, 자주 겪는 문제(FAQ)를 다룹니다.
+
+## 빠른 시작
 
 ```bash
-# 1) 환경파일 준비
 cp .env.example .env
-#    → .env 에서 DATA_ROOT, APP_URL, DB 비밀번호 등을 채웁니다.
+# .env에서 APP_URL, APP_KEY, DB_* 값 채우기 (자세한 내용은 README_install.md 참고)
 
-# 2) 데이터 디렉터리 미리 생성 + 권한 부여 (Oracle 예시의 mkdir + chown 에 대응)
-#    .env 의 DATA_ROOT / PUID / PGID 값에 맞춰 실행하세요. 예: DATA_ROOT=/opt/bookstack
-sudo mkdir -p /opt/bookstack/config /opt/bookstack/db
-sudo chown -R 1000:1000 /opt/bookstack      # ← PUID:PGID 와 일치시킬 것
-
-# 3) APP_KEY 생성 후 .env 의 APP_KEY 에 기입
-docker run -it --rm --entrypoint /bin/bash lscr.io/linuxserver/bookstack:latest appkey
-
-# 4) 기동
+docker compose build
 docker compose up -d
 ```
 
-기동 후 `http://<호스트>:8000` 접속.
-초기 계정: `admin@admin.com` / `password` — **로그인 즉시 변경하세요.**
+기동 후 `http://<호스트>:8000` 접속. 기본 계정: `admin@admin.com` / `password` — **로그인 즉시 비밀번호를 변경하세요.**
 
-## 메모
-
-- **데이터 위치**: 실제 데이터는 `${DATA_ROOT}/config`(BookStack), `${DATA_ROOT}/db`(MariaDB) 에
-  저장됩니다. 컨테이너를 지웠다 다시 만들어도 이 경로의 데이터는 보존됩니다.
-- **이미지 태그 고정**: `latest` 가 아닌 특정 버전으로 핀했습니다. 재현성을 위해 실행 전
-  현재 최신 태그로만 교체하세요.
-- **PUID/PGID**: 2)번의 `chown` 대상 uid/gid 와 `.env` 의 PUID/PGID 를 반드시 일치시키세요.
-- **APP_URL 변경 시** (데이터가 이미 있는 상태):
-  ```bash
-  docker exec -it bookstack php /app/www/artisan bookstack:update-url <이전URL> <새URL>
-  ```
-
-## 백업
-
-```bash
-docker compose exec bookstack_db sh -c 'mariadb-dump -uroot -p"$MYSQL_ROOT_PASSWORD" bookstackapp > /dumps/backup.sql'
-```
-
-## 업데이트
-
-태그를 새 버전으로 바꾼 뒤:
-
-```bash
-docker compose pull
-docker compose up -d
-```
-
-마이그레이션은 기동 시 자동 수행됩니다. 메이저 업데이트 전엔 릴리스 노트를 확인하세요.
+자세한 절차는 [`README_install.md`](./README_install.md)를 참고하세요.
