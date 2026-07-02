@@ -1,4 +1,7 @@
-server {
+# 템플릿입니다. 복사해서 실제 값으로 채운 .env 를 만드세요:
+#   cp default.conf.example default.conf
+#
+
     listen 80;
     server_name _;
 

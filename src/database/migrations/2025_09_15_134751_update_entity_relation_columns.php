@@ -41,8 +41,9 @@ return new class extends Migration
     {
         // Drop foreign key constraints
         Schema::table('bookshelves_books', function (Blueprint $table) {
-            $table->dropForeign(['book_id']);
-            $table->dropForeign(['bookshelf_id']);
+            // FOREIGN KEY 가 없어 Drop이 되지 않아 아래 2줄 주석 처리
+            // $table->dropForeign(['book_id']);
+            // $table->dropForeign(['bookshelf_id']);
         });
 
         // Update column types to unsigned big integers
