@@ -13,7 +13,7 @@ return [
     'image_intro_upload' => '이미지 파일을 이 창으로 끌어다 놓거나 위의 \'이미지 업로드\' 버튼을 사용하여 새 이미지를 업로드합니다.',
     'image_all' => '모든 이미지',
     'image_all_title' => '모든 이미지 보기',
-    'image_book_title' => '이 문서에서 쓰고 있는 이미지',
+    'image_book_title' => '이 책에서 쓰고 있는 이미지',
     'image_page_title' => '이 문서에서 쓰고 있는 이미지',
     'image_search_hint' => '이미지 이름 검색',
     'image_uploaded' => '올림 :uploadedDate',

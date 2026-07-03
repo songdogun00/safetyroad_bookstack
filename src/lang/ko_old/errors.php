@@ -67,12 +67,12 @@ return [
 
     // Entities
     'entity_not_found' => '항목이 없습니다.',
-    'bookshelf_not_found' => '카테고리를 찾을 수 없음',
-    'book_not_found' => '문서가 없습니다.',
+    'bookshelf_not_found' => '책장을 찾을 수 없음',
+    'book_not_found' => '책이 없습니다.',
     'page_not_found' => '문서가 없습니다.',
-    'chapter_not_found' => '하위 분류가 없습니다.',
-    'selected_book_not_found' => '선택된 문서가 없습니다.',
-    'selected_book_chapter_not_found' => '선택된 문서가나 하위 분류가 없습니다',
+    'chapter_not_found' => '챕터가 없습니다.',
+    'selected_book_not_found' => '선택된 책이 없습니다.',
+    'selected_book_chapter_not_found' => '선택된 책이나 챕터가 없습니다',
     'guests_cannot_save_drafts' => 'Guest는 초안 문서를 보관할 수 없습니다.',
 
     // Users
@@ -112,8 +112,8 @@ return [
     'import_zip_data_too_large' => 'ZIP data.json content exceeds the configured application maximum upload size.',
     'import_validation_failed' => '컨텐츠 ZIP 파일을 가져오려다 실패했습니다. 이유:',
     'import_zip_failed_notification' => '컨텐츠 ZIP 파일을 가져오지 못했습니다.',
-    'import_perms_books' => '문서를 만드는 데 필요한 권한이 없습니다.',
-    'import_perms_chapters' => '하위 분류를 만드는 데 필요한 권한이 없습니다.',
+    'import_perms_books' => '책을 만드는 데 필요한 권한이 없습니다.',
+    'import_perms_chapters' => '챕터를 만드는 데 필요한 권한이 없습니다.',
     'import_perms_pages' => '페이지를 만드는 데 필요한 권한이 없습니다.',
     'import_perms_images' => '이미지를 만드는 데 필요한 권한이 없습니다.',
     'import_perms_attachments' => '첨부 파일을 만드는 데 필요한 권한이 없습니다.',
